@@ -12,41 +12,54 @@
 #include <map>
 #include <list>
 #include <fstream>
+#include <string.h>
 
 using namespace std;
 
 /* Function prototypes */
-void compress();
-void decompress();
+void compress(string sourceFileName, string archiveFileName);
+void decompress(string archiveFileName, string outputFileName);
 void buildTable(Node *root1);
 
 /* Global variables */
 vector<bool> symbolCode; // vector of zeros and ones for buildTable(); function
 map<char, vector<bool> > table;// association table for symbols and codes
 Node *root; // pointer to the root of the binary tree
+char sourceFileName[100] = "input.txt";
+char archiveFileName[100] = "archive.hzip";
+char outputFileName[100] = "decompressed-";
 
 int main ()
 {
     int command;
-    cout << "Use next commands:" << endl;
-    cout << "1 - to compress the input.txt file" << endl;
-    cout << "2 - to decompress the input.txt.hzip file" << endl;
-    cout << "3 - to end program \n" << endl;
+    cout << "Huffman coding is a compression technique used to reduce" << endl;
+    cout << "the number of bits needed to send or store a message." << endl;
+    cout << "Put it in the 'res' folder file and check the algorithm." << endl;
+    cout << "Or use the default file - 'input.txt'." << endl;
+    cout << endl << "Use next commands:" << endl;
+    cout << "1 - to compress the file" << endl;
+    cout << "2 - to decompress the file" << endl;
+    cout << "3 - to end program \n";
     while (true){
-        cout << "Type your command: ";
+        cout << endl << "Type your command: ";
         cin >> command;
         switch (command) {
             case 1:
-                compress();
-                cout << "\nCompression completed \nFile was saved with name: 'input.txt.hzip' \n" << endl;
+                cout << "Enter file name: ";
+                cin >> sourceFileName;
+                strcpy(archiveFileName, sourceFileName);
+                strcat(archiveFileName, ".hzip");
+                compress(sourceFileName, archiveFileName);
+                cout << "\nCompression completed. \nFile was saved with name: " << archiveFileName << endl;
                 break;
             case 2:
-                decompress();
-                cout << "\nDecompression completed \nFile was saved with name: 'output.txt' \n" << endl;
+                strcat(outputFileName, sourceFileName);
+                decompress(archiveFileName, outputFileName);
+                cout << "\nDecompression completed. \nFile was saved with name: " << outputFileName << endl;
                 break;
             case 3:
                 cout << "Program closed." << endl;
-                exit(0);
+                return(0);
             default:
                 cout << "\nYou made a wrong choice! \n" <<endl;
                 cout << "Program ended." << endl;
@@ -83,9 +96,9 @@ void buildTable(Node *root1){
 * ---------------------------------------
 * Compress the input.txt file.
 */
-void compress(){
+void compress(string sourceFileName, string archiveFileName){
 
-    ifstream tozipStream("input.txt", ios::in | ios::binary); // create a stream from the source file
+    ifstream tozipStream(sourceFileName, ios::in | ios::binary); // create a stream from the source file
 
     map <char, int> charsCounts; // for counting characters in source file
 
@@ -122,7 +135,7 @@ void compress(){
 
     tozipStream.clear(); tozipStream.seekg(0);
 
-    ofstream hzipStream("input.txt.hzip", ios::out | ios::binary);
+    ofstream hzipStream(archiveFileName, ios::out | ios::binary);
     int counter = 0;
     char buffer = 0;
     while(!tozipStream.eof()){
@@ -150,10 +163,10 @@ void compress(){
 * ---------------------------------------
 * Decompress the input.txt.hzip file.
 */
-void decompress(){
+void decompress(string archiveFileName, string outputFileName){
 
-    ifstream hzipStream("input.txt.hzip", ios::in | ios::binary);
-    ofstream unzipStream("output.txt", ios::out | ios::binary);
+    ifstream hzipStream(archiveFileName, ios::in | ios::binary);
+    ofstream unzipStream(outputFileName, ios::out | ios::binary);
     Node *p = root;
     int counter=0;
     char byte;

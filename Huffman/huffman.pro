@@ -291,4 +291,7 @@ exists($$PWD/lib/autograder/*.cpp) {
 }
 
 DISTFILES += \
-    res/input.txt
+    res/input.txt \
+    res/input.png \
+    res/English.pdf \
+    res/EyeLeo.exe
