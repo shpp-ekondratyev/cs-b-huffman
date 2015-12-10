@@ -6,12 +6,13 @@
 using namespace std;
 
 char sourceFileName[10] = "input.txt";
-char archiveFileName[14] = "input.txt.zip";
+//char archiveFileName[14] = "input.txt.zip";
 
 int main()
 {
     // create the ZIP archive
     int err = 0;
+    char archiveFileName[14] = strcat(sourceFileName, ".zip");
     zip *z = zip_open(archiveFileName, ZIP_CREATE, &err);
     if(err)
     {
