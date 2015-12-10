@@ -5,21 +5,20 @@
 
 using namespace std;
 
-char sourceFileName[10] = "input.txt";
-//char archiveFileName[14] = "input.txt.zip";
+char sourceFileName[14] = "input.txt";
+char archiveFileName[14] = "input.txt.zip";
 
 int main()
 {
     // create the ZIP archive
     int err = 0;
-    char archiveFileName[14] = strcat(sourceFileName, ".zip");
     zip *z = zip_open(archiveFileName, ZIP_CREATE, &err);
     if(err)
     {
         cout << "Could not open or create archive" << endl;
         return -1;
     }
-    cout << "Zip created" << endl;
+    cout << "Zip descriptor created" << endl;
 
     zip_source *source = zip_source_file(z, sourceFileName, 0, 0);
     cout << "Zip source created" << endl;
